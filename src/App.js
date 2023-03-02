@@ -1,9 +1,9 @@
-
+import StudentContainer from "./components/students/StudentContainer";
 
 function App() {
   return (
     <div>
-      Hello
+      <StudentContainer />
     </div>
   );
 }
