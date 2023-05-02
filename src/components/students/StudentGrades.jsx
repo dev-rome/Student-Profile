@@ -1,4 +1,6 @@
-function StudentGrades({ grades }) {
+import { memo } from "react";
+
+const StudentGrades = ({ grades }) => {
   return (
     <ul className="font-raleway ml-3 md:ml-6 mb-3">
       {grades.map((grade, index) => (
@@ -8,6 +10,6 @@ function StudentGrades({ grades }) {
       ))}
     </ul>
   );
-}
+};
 
-export default StudentGrades;
+export default memo(StudentGrades);
