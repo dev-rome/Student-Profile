@@ -1,6 +1,6 @@
-import Students from "./components/Students";
+import Students from "./components/students/Students";
 
-function App() {
+const App = () => {
   return <Students />;
 }
 
