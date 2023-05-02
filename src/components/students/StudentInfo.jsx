@@ -1,18 +1,25 @@
+import { memo } from "react";
 import { useState } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import StudentInfoList from "./StudentInfoList";
 import StudentGrades from "./StudentGrades";
+import StudentTags from "./StudentTags";
+import TagForm from "../TagForm";
 import Button from "../Button";
 
-
-function StudentInfo({ student }) {
+const StudentInfo = ({ student }) => {
   const [showGrades, setShowGrades] = useState(false);
+  const [tags, setTags] = useState(student.tags || []);
 
-  const caculateAverage = () => {
+  const calculateAverage = () => {
     return (
       student.grades.reduce((a, b) => parseInt(a) + parseInt(b), 0) /
       student.grades.length
     );
+  };
+
+  const addTag = (tag) => {
+    setTags((prevTags) => [...prevTags, tag]);
   };
 
   const handleClick = () => {
@@ -36,8 +43,13 @@ function StudentInfo({ student }) {
             {student.firstName} {student.lastName}
           </h1>
           <div className="flex flex-col">
-            <StudentInfoList student={student} calculateAverage={caculateAverage}/>
+            <StudentInfoList
+              student={student}
+              calculateAverage={calculateAverage}
+            />
             {showGrades && <StudentGrades grades={student.grades} />}
+            <StudentTags tags={tags} />
+            <TagForm addTag={addTag} />
           </div>
         </div>
       </div>
@@ -52,6 +64,6 @@ function StudentInfo({ student }) {
       </div>
     </div>
   );
-}
+};
 
-export default StudentInfo;
+export default memo(StudentInfo);
