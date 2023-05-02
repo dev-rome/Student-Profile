@@ -7,9 +7,9 @@ import StudentTags from "./StudentTags";
 import TagForm from "../TagForm";
 import Button from "../Button";
 
-const StudentInfo = ({ student }) => {
+const StudentInfo = ({ student, updateStudentTags, tag }) => {
   const [showGrades, setShowGrades] = useState(false);
-  const [tags, setTags] = useState(student.tags || []);
+  const [tags, setTags] = useState(tag || []);
 
   const calculateAverage = () => {
     return (
@@ -19,7 +19,11 @@ const StudentInfo = ({ student }) => {
   };
 
   const addTag = (tag) => {
-    setTags((prevTags) => [...prevTags, tag]);
+    setTags((prevTags) => {
+      const newTags = [...prevTags, tag];
+      updateStudentTags(student.id, newTags);
+      return newTags;
+    });
   };
 
   const handleClick = () => {
