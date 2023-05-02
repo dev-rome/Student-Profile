@@ -1,16 +1,35 @@
 import { useState } from "react";
 import useFetch from "../../hooks/useFetch";
-import Search from "../Search";
+import SearchForm from "../SearchForm";
 import StudentInfo from "./StudentInfo";
 
-function Students() {
-  const [filterValue, setFilterValue] = useState("");
+const Students = () => {
+  const [filterNameValue, setFilterNameValue] = useState("");
+  const [filterTagValue, setFilterTagValue] = useState("");
+  const [updatedStudents, setUpdatedStudents] = useState({});
   const url = "https://api.hatchways.io/assessment/students";
   const { data, loading, error } = useFetch(url);
 
-  const filteredStudents = data.filter(({ firstName, lastName }) => {
+  const updateStudentTags = (studentId, newTags) => {
+    setUpdatedStudents((prevUpdatedStudents) => ({
+      ...prevUpdatedStudents,
+      [studentId]: newTags,
+    }));
+  };
+
+  const filteredStudents = data.filter(({ id, firstName, lastName }) => {
     const fullName = `${firstName} ${lastName}`;
-    return fullName.toLowerCase().includes(filterValue.toLowerCase());
+    const nameMatch = fullName
+      .toLowerCase()
+      .includes(filterNameValue.toLowerCase());
+    const studentTags = updatedStudents[id] || [];
+    const tagMatch =
+      !filterTagValue ||
+      studentTags.some((tag) =>
+        tag.toLowerCase().includes(filterTagValue.toLowerCase())
+      );
+
+    return nameMatch && tagMatch;
   });
 
   if (loading) return <div>Loading...</div>;
@@ -19,17 +38,27 @@ function Students() {
   return (
     <section className="h-screen bg-gray-200 flex justify-center items-center px-4">
       <div className="bg-white h-[80vh] max-w-4xl w-full shadow-md rounded-lg overflow-y-auto">
-        <Search
+        <SearchForm
           placeholder="Search by name"
-          value={filterValue}
-          onChange={(e) => setFilterValue(e.target.value)}
+          value={filterNameValue}
+          onChange={(e) => setFilterNameValue(e.target.value)}
+        />
+        <SearchForm
+          placeholder="Search by tag"
+          value={filterTagValue}
+          onChange={(e) => setFilterTagValue(e.target.value)}
         />
         {filteredStudents.map((student) => (
-          <StudentInfo key={student.id} student={student} />
+          <StudentInfo
+            key={student.id}
+            student={student}
+            updateStudentTags={updateStudentTags}
+            tag={updatedStudents[student.id]}
+          />
         ))}
       </div>
     </section>
   );
-}
+};
 
 export default Students;
