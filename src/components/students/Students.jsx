@@ -17,17 +17,20 @@ const Students = () => {
     }));
   };
 
-  const filteredStudents = data.filter(({ id, firstName, lastName }) => {
+  const filteredStudents = data.filter(({ id, firstName, lastName, tags }) => {
     const fullName = `${firstName} ${lastName}`;
     const nameMatch = fullName
       .toLowerCase()
       .includes(filterNameValue.toLowerCase());
-    const studentTags = updatedStudents[id] || [];
+
+    const updatedTags = updatedStudents[id] || tags;
+
     const tagMatch =
       !filterTagValue ||
-      studentTags.some((tag) =>
-        tag.toLowerCase().includes(filterTagValue.toLowerCase())
-      );
+      (updatedTags &&
+        updatedTags.some((tag) =>
+          tag.toLowerCase().includes(filterTagValue.toLowerCase())
+        ));
 
     return nameMatch && tagMatch;
   });
@@ -52,8 +55,8 @@ const Students = () => {
           <StudentInfo
             key={student.id}
             student={student}
+            tag={updatedStudents[student.id] || student.tags}
             updateStudentTags={updateStudentTags}
-            tag={updatedStudents[student.id]}
           />
         ))}
       </div>
