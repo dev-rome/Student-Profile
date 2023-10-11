@@ -7,10 +7,10 @@ This project is built to be assessed by Hatchways for recruitment purposes.
 <img width="1440" alt="Screenshot 2023-10-11 at 9 29 03 AM" src="https://github.com/dev-rome/Student-Profile/assets/84602714/5a51ff90-b4c4-4d17-a7f7-4b38371a2c4c">
 
 ## Technologies Used
-React
-React Icons
-JavaScript
-Tailwind CSS
+- React
+- React Icons
+- JavaScript
+- Tailwind CSS
 
 ## Installation
 Clone the whole project or unzip the file. Run the following in the root folder:
